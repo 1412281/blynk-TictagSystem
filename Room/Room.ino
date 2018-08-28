@@ -302,6 +302,16 @@ void setup()
     
     Serial.begin(9600);
 
+    digitalWrite(latchPin1, LOW);
+    shiftOut(dataPin, clockPin, MSBFIRST, ledStatus1);  
+    digitalWrite(latchPin1, HIGH);//các đèn LED sẽ sáng với trạng thái vừa được cập nhật
+    digitalWrite(latchPin2, LOW);
+    shiftOut(dataPin, clockPin, MSBFIRST, ledStatus2);  
+    digitalWrite(latchPin2, HIGH);//các đèn LED sẽ sáng với trạng thái vừa được cập nhật
+    digitalWrite(latchPin3, LOW);
+    shiftOut(dataPin, clockPin, MSBFIRST, ledStatus3);  
+    digitalWrite(latchPin3, HIGH);//các đèn LED sẽ sáng với trạng thái vừa được cập nhật
+
     tokenHasSet = EEPROM.read(TOKEN_HAS_SET_ADDRESS);
     Serial.print("====== token has set value: ");
     Serial.println(tokenHasSet);
@@ -350,6 +360,7 @@ void Relay_Control (int relay,int state1)
   digitalWrite(latchPin1, HIGH);//các đèn LED sẽ sáng với trạng thái vừa được cập nhật
   Serial.print(relay);
   Serial.println(state1);
+  printBinary(ledStatus1);
   Serial.println("TH1");
   }
   }
@@ -371,6 +382,7 @@ void Relay_Control (int relay,int state1)
   digitalWrite(latchPin2, HIGH);//các đèn LED sẽ sáng với trạng thái vừa được cập nhật 
   Serial.print(relay);
   Serial.println(state1);
+  printBinary(ledStatus2);
   Serial.println("TH2");
   }
   }
@@ -392,11 +404,19 @@ void Relay_Control (int relay,int state1)
   digitalWrite(latchPin3, HIGH);//các đèn LED sẽ sáng với trạng thái vừa được cập nhật 
   Serial.print(relay);
   Serial.println(state1);
+  printBinary(ledStatus3);
   Serial.println("TH3"); 
   }
   }
 }
 //................................................................
+void printBinary(byte inByte)
+{
+  for (int b = 7; b >= 0; b--)
+  {
+    Serial.print(bitRead(inByte, b));
+  }
+}
 void loop()
 {
     Blynk.run();
